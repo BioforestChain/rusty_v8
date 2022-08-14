@@ -53,6 +53,11 @@ jobs:
             target: aarch64-unknown-linux-gnu
             variant: release
 
+          - os: ${{ github.repository == 'denoland/rusty_v8' && 'ubuntu-20.04-xl' || 'ubuntu-18.04' }}
+            target: aarch64-linux-android
+            variant: release # Note: v8 debug builds on QEMU is buggy.
+            cargo: cross
+
     env:
       V8_FROM_SOURCE: true
       CARGO_VARIANT_FLAG: ${{ matrix.config.variant == 'release' && '--release' || '' }}
@@ -161,6 +166,14 @@ jobs:
           tar -xzvf "$basename.tar.gz"
           . $basename/sccache --start-server
           echo "$(pwd)/$basename" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Install cross
+        if: matrix.config.target == 'aarch64-linux-android'
+        run: cargo install cross
+
+      - name: Build cross docker image
+        if: matrix.config.target == 'aarch64-linux-android'  
+        run: docker build -t cross:aarch64-linux-android-0.2.1 .
 
       - name: Test
         env:
