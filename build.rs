@@ -240,7 +240,7 @@ fn maybe_clone_repo(dest: &str, repo: &str) {
 fn maybe_install_sysroot(arch: &str) {
   let sysroot_path = format!("build/linux/debian_sid_{}-sysroot", arch);
   if !PathBuf::from(sysroot_path).is_dir() {
-    let status = Command::new("python")
+    let status = Command::new("python3")
       .arg("./build/linux/sysroot_scripts/install-sysroot.py")
       .arg(format!("--arch={}", arch))
       .status()
@@ -277,7 +277,7 @@ fn download_ninja_gn_binaries() {
   let ninja = ninja.with_extension("exe");
 
   if !gn.exists() || !ninja.exists() {
-    let status = Command::new("python")
+    let status = Command::new("python3")
       .arg("./tools/ninja_gn_binaries.py")
       .arg("--dir")
       .arg(&target_dir)
@@ -382,7 +382,7 @@ fn download_file(url: String, filename: PathBuf) {
   // Try downloading with python first. Python is a V8 build dependency,
   // so this saves us from adding a Rust HTTP client dependency.
   println!("Downloading {}", url);
-  let status = Command::new("python")
+  let status = Command::new("python3")
     .arg("./tools/download_file.py")
     .arg("--url")
     .arg(&url)
@@ -530,7 +530,7 @@ fn find_compatible_system_clang() -> Option<PathBuf> {
 fn clang_download() -> PathBuf {
   let clang_base_path = build_dir().join("clang");
   println!("clang_base_path {}", clang_base_path.display());
-  let status = Command::new("python")
+  let status = Command::new("python3")
     .arg("./tools/clang/scripts/update.py")
     .arg("--output-dir")
     .arg(&clang_base_path)
@@ -657,7 +657,7 @@ fn generate_compdb(
   target: &str,
   output_path: Option<&Path>,
 ) {
-  let mut cmd = Command::new("python");
+  let mut cmd = Command::new("python3");
   cmd.arg("tools/generate_compdb.py");
   cmd.arg("-p");
   cmd.arg(&gn_out_dir);
@@ -680,7 +680,7 @@ fn generate_compdb(
     cmd.env("PATH", new_path);
   }
 
-  run(&mut cmd, "python");
+  run(&mut cmd, "python3");
 }
 
 pub type GnArgs = Vec<String>;
