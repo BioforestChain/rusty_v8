@@ -25,10 +25,10 @@ jobs:
         !contains(github.event.pull_request.labels.*.name, 'no-fail-fast') }}
       matrix:
         config:
-          - os: macOS-latest
-            target: x86_64-apple-darwin
-            variant: release
-            cargo: cargo
+          # - os: macOS-latest
+          #   target: x86_64-apple-darwin
+          #   variant: release
+          #   cargo: cargo
 
           - os: ${{ github.repository == 'BioforestChain/rusty_v8' && 'ubuntu-20.04-xl' || 'ubuntu-18.04' }}
             target: aarch64-linux-android
