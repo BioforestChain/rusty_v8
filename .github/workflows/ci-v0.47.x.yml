@@ -151,7 +151,7 @@ jobs:
         env:
           SCCACHE_IDLE_TIMEOUT: 0
         run:
-          ${{ matrix.config.cargo }} test -vv --all-targets --locked ${{ env.CARGO_VARIANT_FLAG }}
+          RUST_BACKTRACE=1 ${{ matrix.config.cargo }} test -vv --all-targets --locked ${{ env.CARGO_VARIANT_FLAG }}
           --target ${{ matrix.config.target }}
 
       - name: Clippy
